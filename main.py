@@ -22,3 +22,10 @@ def liste_des_pres():
         if extraire_nom_president(txt) not in resultat: #si le nom du président n'est pas déjà dans le résultat, on le rajoute à la fin de la list
             resultat.append(extraire_nom_president(txt))
     return resultat
+
+#permet d'associer un prénom à chaque nom de famille d'un président
+def fullname_liste_pres():
+    resultat = []
+    for i in range(len(liste_nom_pres)):
+        resultat.append((prenoms[i], liste_nom_pres[i]))
+    return resultat
