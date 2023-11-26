@@ -151,12 +151,12 @@ print(liste_pres)
 
 clean_text()
 
-# print(len(score_tfidf("cleaned")))
-#
-# for i in score_tfidf("cleaned"):
-#     print(i)
+print(len(score_tfidf("cleaned")))
 
-menu()
+for i in score_tfidf("cleaned"):
+    print(i)
+
+#menu()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
