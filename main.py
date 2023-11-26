@@ -47,3 +47,24 @@ def everywordonce(corpus):
                 result.append(j)
             words.append(j)
     return result
+
+#Fonction qui écrit le nombre d'occurences de chaque mots présent dans les discours des présidents
+def tf(texte: str):
+    corpus = []
+    for nom in list_of_files("cleaned","txt"):
+        with open("cleaned/"+nom) as f:
+            corpus.append(f.read())
+    everyword = everywordonce(corpus)
+    liste_mots = texte.split()
+    result = {}
+    words = []
+    occurence = 0
+    for mot in everyword:
+        occurence = 0
+        for mot_dans_doc in liste_mots:
+            if mot == mot_dans_doc:
+                occurence = occurence + 1
+        if mot not in words:
+            result[mot] = occurence / len(liste_mots)
+        words.append(mot)
+    return result
