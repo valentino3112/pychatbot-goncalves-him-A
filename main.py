@@ -111,3 +111,52 @@ def score_tfidf(repertoire):
             matrice[i][j] = idf_corpus[v]*tf_du_corpus[j][v]    #idf*tf
 
     return matrice
+
+def menu():
+    while True:
+        print("\nMenu :")
+        print("1. Afficher les mots les moins importants")
+        print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
+        print("3. Indiquer les mots les plus répétés par le président Chirac")
+        print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
+        print("5. Indiquer le premier président à parler du climat ou de l'écologie")
+        print("6. Trouver les mots évoqués par tous les présidents")
+
+
+        choix = input("Choisissez une option : ")
+
+        if choix == '1':
+            print("Les mots les moins importants sont :")
+        elif choix == '2':
+            print("Les mots les plus importants sont :")
+        elif choix == '3':
+            print("Les mots les plus répétés de Chirac sont :")
+        elif choix == '4':
+            print("Les noms des présidents qui ont parlé de la Nation sont et celui qui la dis le plus de fois est :")
+        elif choix == '5':
+            print("Le premier président qui a parlé d'écologie est :")
+        elif choix == '6':
+            print("Les mots que tous les présidents ont évoqués sont :")
+        else:
+            print("le chiffre n'est pas valide")
+
+
+prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
+liste_nom_pres = liste_des_pres()
+liste_nom_pres.sort()
+
+
+liste_pres = fullname_liste_pres()
+print(liste_pres)
+
+clean_text()
+
+# print(len(score_tfidf("cleaned")))
+#
+# for i in score_tfidf("cleaned"):
+#     print(i)
+
+menu()
+
+
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
