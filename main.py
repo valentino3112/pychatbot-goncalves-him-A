@@ -29,3 +29,11 @@ def fullname_liste_pres():
     for i in range(len(liste_nom_pres)):
         resultat.append((prenoms[i], liste_nom_pres[i]))
     return resultat
+
+#On nettoie le fichier texte "speeches" et on l'enregistre dans un nouveau répertoire "cleaned"
+def clean_text():
+    for txt in list_of_files("speeches", "txt"): #on ouvre tous les fichiers dans "speeches" avec l'extension "txt"
+        with open("speeches/" + txt, 'r') as f: #on ouvre les fichiers en mode lecture
+            contents = f.read().casefold().replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("\n", " ").replace("   ", " ").replace("  ", " ") #On remplace les lettres majuscules par des minuscules, on supprime les ".",",","!" et on remplace les "'","-" par des espaces
+        with open('cleaned/' + txt, 'w') as f: #on ouvre un noveau fichier en mode ecriture
+            f.write(contents) #Toutes les modifications apportées vont être dans le fichiers "cleaned"
