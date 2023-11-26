@@ -37,3 +37,13 @@ def clean_text():
             contents = f.read().casefold().replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("\n", " ").replace("   ", " ").replace("  ", " ") #On remplace les lettres majuscules par des minuscules, on supprime les ".",",","!" et on remplace les "'","-" par des espaces
         with open('cleaned/' + txt, 'w') as f: #on ouvre un noveau fichier en mode ecriture
             f.write(contents) #Toutes les modifications apportées vont être dans le fichiers "cleaned"
+
+def everywordonce(corpus):
+    words = []
+    result = []
+    for i in corpus:
+        for j in i.split():
+            if j not in words:
+                result.append(j)
+            words.append(j)
+    return result
