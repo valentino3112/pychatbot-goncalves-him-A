@@ -91,3 +91,23 @@ def idf(repertoire: str) :
                 idf[mot] = math.log10(len(corpus) / occurence)
             mots_parcouru.append(mot)
     return idf
+
+def score_tfidf(repertoire):
+    corpus = []
+    for nom in list_of_files(repertoire, "txt"):
+        with open(repertoire + "/" + nom) as f:
+            corpus.append(f.read())
+
+    tf_du_corpus = []
+    for txt in corpus:
+        tf_du_corpus.append(tf(txt))
+
+    idf_corpus = idf(repertoire)
+
+    matrice = [[0 for k in range(len(corpus))] for i in range(len(idf_corpus))]
+
+    for i, v in zip(range(len(idf_corpus)), idf_corpus):        #chaque ligne correspond à un mot
+        for j in range(len(tf_du_corpus)):                      #chaque colonnes correspond à un doc
+            matrice[i][j] = idf_corpus[v]*tf_du_corpus[j][v]    #idf*tf
+
+    return matrice
