@@ -34,7 +34,7 @@ def fullname_liste_pres():
 def clean_text():
     for txt in list_of_files("speeches", "txt"): #on ouvre tous les fichiers dans "speeches" avec l'extension "txt"
         with open("speeches/" + txt, 'r') as f: #on ouvre les fichiers en mode lecture
-            contents = f.read().casefold().replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("\n", " ").replace("   ", " ").replace("  ", " ") #On remplace les lettres majuscules par des minuscules, on supprime les ".",",","!" et on remplace les "'","-" par des espaces
+            contents = f.read().casefold().replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("`","").replace("\n", " ").replace("   ", " ").replace("  ", " ") #On remplace les lettres majuscules par des minuscules, on supprime les ".",",","!" et on remplace les "'","-" par des espaces
         with open('cleaned/' + txt, 'w') as f: #on ouvre un noveau fichier en mode ecriture
             f.write(contents) #Toutes les modifications apportées vont être dans le fichiers "cleaned"
 
@@ -124,6 +124,14 @@ liste_pres = fullname_liste_pres()
 print(liste_pres)
 
 clean_text()
+idf_corpus = idf("cleaned")
+print(len(idf_corpus))
+matrice_score_tf_idf =  score_tfidf("cleaned")
+print(len(matrice_score_tf_idf))
+print("done")
+for i,k in zip(matrice_score_tf_idf, idf_corpus):
+    if i == [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]:
+        print("mot moins utiliser:", k)
 
 # print(len(score_tfidf("cleaned")))
 #
@@ -131,35 +139,36 @@ clean_text()
 #     print(i)
 
 
-def menu():
-    while True:
-        print("\nMenu :")
-        print("1. Afficher les mots les moins importants")
-        print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
-        print("3. Indiquer les mots les plus répétés par le président Chirac")
-        print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
-        print("5. Indiquer le premier président à parler du climat ou de l'écologie")
-        print("6. Trouver les mots évoqués par tous les présidents")
 
+# while True:
+#     print("\nMenu :")
+#     print("1. Afficher les mots les moins importants")
+#     print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
+#     print("3. Indiquer les mots les plus répétés par le président Chirac")
+#     print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
+#     print("5. Indiquer le premier président à parler du climat ou de l'écologie")
+#     print("6. Trouver les mots évoqués par tous les présidents")
+#
+#
+#     choix = input("Choisissez une option : ")
+#
+#     if choix == '1':
+#         print("Les mots les moins importants sont :")
+#         for i in matrice_score_tf_idf:
+#
+#     elif choix == '2':
+#         print("Les mots les plus importants sont :")
+#     elif choix == '3':
+#         print("Les mots les plus répétés de Chirac sont :")
+#     elif choix == '4':
+#         print("Les noms des présidents qui ont parlé de la Nation sont et celui qui la dis le plus de fois est :")
+#     elif choix == '5':
+#         print("Le premier président qui a parlé d'écologie est :")
+#     elif choix == '6':
+#         print("Les mots que tous les présidents ont évoqués sont :")
+#     else:
+#         print("le chiffre n'est pas valide")
 
-        choix = input("Choisissez une option : ")
-
-        if choix == '1':
-            print("Les mots les moins importants sont :")
-        elif choix == '2':
-            print("Les mots les plus importants sont :")
-        elif choix == '3':
-            print("Les mots les plus répétés de Chirac sont :")
-        elif choix == '4':
-            print("Les noms des présidents qui ont parlé de la Nation sont et celui qui la dis le plus de fois est :")
-        elif choix == '5':
-            print("Le premier président qui a parlé d'écologie est :")
-        elif choix == '6':
-            print("Les mots que tous les présidents ont évoqués sont :")
-        else:
-            print("le chiffre n'est pas valide")
-
-menu()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
