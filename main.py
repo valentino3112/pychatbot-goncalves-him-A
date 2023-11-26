@@ -68,3 +68,25 @@ def tf(texte: str):
             result[mot] = occurence / len(liste_mots)
         words.append(mot)
     return result
+
+def idf(repertoire: str) :
+    corpus = []
+    tf_du_corpus = []
+    for nom in list_of_files(repertoire,"txt"):
+        with open(repertoire +"/"+nom) as f:
+            corpus.append(f.read())
+    for txt in corpus:
+        tf_du_corpus.append(tf(txt))
+    occurence = 0
+    idf = {}
+    mots_parcouru = []
+    for tfdoc in tf_du_corpus:
+        for mot in tfdoc:
+            occurence = 0
+            for texte in corpus:
+                if mot in texte:
+                    occurence = occurence + 1  #si le mot apparait dans un des texte du corpus on fait +1
+            if mot not in mots_parcouru: #pour eviter doublons
+                idf[mot] = math.log10(len(corpus) / occurence)
+            mots_parcouru.append(mot)
+    return idf
