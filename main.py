@@ -112,6 +112,25 @@ def score_tfidf(repertoire):
 
     return matrice
 
+
+
+
+prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
+liste_nom_pres = liste_des_pres()
+liste_nom_pres.sort()
+
+
+liste_pres = fullname_liste_pres()
+print(liste_pres)
+
+clean_text()
+
+# print(len(score_tfidf("cleaned")))
+#
+# for i in score_tfidf("cleaned"):
+#     print(i)
+
+
 def menu():
     while True:
         print("\nMenu :")
@@ -140,23 +159,7 @@ def menu():
         else:
             print("le chiffre n'est pas valide")
 
-
-prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
-liste_nom_pres = liste_des_pres()
-liste_nom_pres.sort()
-
-
-liste_pres = fullname_liste_pres()
-print(liste_pres)
-
-clean_text()
-
-print(len(score_tfidf("cleaned")))
-
-for i in score_tfidf("cleaned"):
-    print(i)
-
-#menu()
+menu()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
