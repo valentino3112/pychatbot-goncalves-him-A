@@ -69,6 +69,7 @@ def tf(texte: str):
         words.append(mot)
     return result
 
+#a
 def idf(repertoire: str) :
     corpus = []
     tf_du_corpus = []
