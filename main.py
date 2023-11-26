@@ -12,7 +12,7 @@ def list_of_files(directory, extension): #on prends une entrée (directory) ains
 
 #On récupère le nom du président et nous retourne le resultat
 def extraire_nom_president(nom: str):
-    result = nom[11:-4].rstrip("1234567890") #on prends le nom qui se trouve à l'indice 11 jusqu'à l'indice -4 en supprimant les chiffres allant de 0 à 9
+    result = nom[11:-4].rstrip("1234567890").replace(" ","_") #on prends le nom qui se trouve à l'indice 11 jusqu'à l'indice -4 en supprimant les chiffres allant de 0 à 9
     return result
 
 #On prends les noms des présidents sans doublons et le retourne dans la liste
@@ -34,7 +34,7 @@ def fullname_liste_pres():
 def clean_text():
     for txt in list_of_files("speeches", "txt"): #on ouvre tous les fichiers dans "speeches" avec l'extension "txt"
         with open("speeches/" + txt, 'r') as f: #on ouvre les fichiers en mode lecture
-            contents = f.read().casefold().replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("`","").replace("\n", " ").replace("   ", " ").replace("  ", " ") #On remplace les lettres majuscules par des minuscules, on supprime les ".",",","!" et on remplace les "'","-" par des espaces
+            contents = f.read().casefold().replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("`","").replace("\"","").replace("\n", " ").replace("   ", " ").replace("  ", " ") #On remplace les lettres majuscules par des minuscules, on supprime les ".",",","!" et on remplace les "'","-" par des espaces
         with open('cleaned/' + txt, 'w') as f: #on ouvre un noveau fichier en mode ecriture
             f.write(contents) #Toutes les modifications apportées vont être dans le fichiers "cleaned"
 
@@ -129,10 +129,95 @@ print(len(idf_corpus))
 matrice_score_tf_idf =  score_tfidf("cleaned")
 print(len(matrice_score_tf_idf))
 print("done")
+#-----mot moins important-----
+mots_moins_important = []
 for i,k in zip(matrice_score_tf_idf, idf_corpus):
     if i == [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]:
-        print("mot moins important:", k)
+        mots_moins_important.append(k)
 
+#----------------------------
+
+#----mots_plus_important-----
+mots_plus_important = []
+somme_tfidf = {}
+for i,k in zip(matrice_score_tf_idf, idf_corpus):
+    somme_tfidf[k] = sum(i)
+
+somme_tfidf_decroissant = sorted(somme_tfidf.items(), key=lambda x:x[1])[::-1]
+
+
+#----------------------------
+
+#----mots_plus_répété_par_x-----
+mots_plus_répété_par_x = []
+discours_de_x = []
+tf_du_discours_de_x = {}
+for nom in list_of_files("cleaned", "txt"):
+    if "Chirac" in nom:
+        with open("cleaned/" + nom) as f:
+            discours_de_x.append(f.read())
+
+tf_du_discours_de_x = tf(' '.join(discours_de_x))
+tf_decroissant = sorted(tf_du_discours_de_x.items(), key=lambda x:x[1])[::-1]
+
+#----------------------------
+
+#----nom_des_pres_qui_parle_de_x-----
+tout_les_discours = {}
+for nom in list_of_files("cleaned", "txt"):
+    tout_les_discours[extraire_nom_president(nom)] = []
+
+for nom in list_of_files("cleaned", "txt"):
+    with open("cleaned/" + nom) as f:
+        tout_les_discours[extraire_nom_president(nom)].append(f.read())
+
+pres_qui_parle_de_nation = {}
+for i in tout_les_discours:
+    pres_qui_parle_de_nation[i] = 0
+    for j in tout_les_discours[i]:
+        if tf(j)["nation"] != 0.0:
+            pres_qui_parle_de_nation[i] = pres_qui_parle_de_nation[i] + tf(j)["nation"]
+            #print((i,tf(j)["nation"]))
+
+#----------------------------
+
+#----premier_president_qui_parle-----
+pres_qui_parle_de_eco = {}
+for i in tout_les_discours:
+    pres_qui_parle_de_eco[i] = 0
+    for j in tout_les_discours[i]:
+        if "climat" in j or "écolo" in j:
+            pres_qui_parle_de_eco[i] = pres_qui_parle_de_eco[i] + 1
+
+
+#----------------------------
+
+#----mot_que_tout_pres_ont_évoqué-----
+THECORPUS = []
+for nom in list_of_files("cleaned", "txt"):
+    with open("cleaned/" + nom) as f:
+        THECORPUS.append(f.read())
+
+CORPUSDICT = everywordonce(THECORPUS)
+
+mot_que_pres_ont_dit = {}
+
+for i in CORPUSDICT:
+    mot_que_pres_ont_dit[i] = []
+    for j in tout_les_discours:
+        for k in tout_les_discours[j]:
+            if i in k and idf_corpus[i] != 0.0:
+                #print(j,"le dit")
+                mot_que_pres_ont_dit[i].append(j)
+                break
+
+mot_dit_par_tout_president_mais_pas_non_important = []
+
+for i in mot_que_pres_ont_dit:
+    if len(mot_que_pres_ont_dit[i]) == 6:
+        mot_dit_par_tout_president_mais_pas_non_important.append(i)
+
+#----------------------------
 # print(len(score_tfidf("cleaned")))
 #
 # for i in score_tfidf("cleaned"):
@@ -140,34 +225,46 @@ for i,k in zip(matrice_score_tf_idf, idf_corpus):
 
 
 
-# while True:
-#     print("\nMenu :")
-#     print("1. Afficher les mots les moins importants")
-#     print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
-#     print("3. Indiquer les mots les plus répétés par le président Chirac")
-#     print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
-#     print("5. Indiquer le premier président à parler du climat ou de l'écologie")
-#     print("6. Trouver les mots évoqués par tous les présidents")
-#
-#
-#     choix = input("Choisissez une option : ")
-#
-#     if choix == '1':
-#         print("Les mots les moins importants sont :")
-#         for i in matrice_score_tf_idf:
-#
-#     elif choix == '2':
-#         print("Les mots les plus importants sont :")
-#     elif choix == '3':
-#         print("Les mots les plus répétés de Chirac sont :")
-#     elif choix == '4':
-#         print("Les noms des présidents qui ont parlé de la Nation sont et celui qui la dis le plus de fois est :")
-#     elif choix == '5':
-#         print("Le premier président qui a parlé d'écologie est :")
-#     elif choix == '6':
-#         print("Les mots que tous les présidents ont évoqués sont :")
-#     else:
-#         print("le chiffre n'est pas valide")
+while True:
+    print("\nMenu :")
+    print("1. Afficher les mots les moins importants")
+    print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
+    print("3. Indiquer les mots les plus répétés par le président Chirac")
+    print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
+    print("5. Indiquer le premier président à parler du climat ou de l'écologie")
+    print("6. Trouver les mots évoqués par tous les présidents")
+
+
+    choix = input("Choisissez une option : ")
+
+    if choix == '1':
+        print("Les mots les moins importants sont :")
+        print(mots_moins_important)
+    elif choix == '2':
+        print("Les mots les plus importants sont :")
+        print(somme_tfidf_decroissant)
+    elif choix == '3':
+        print("Les mots les plus répétés de Chirac sont :")
+        print(tf_decroissant)
+    elif choix == '4':
+        print("Les noms des présidents qui ont parlé de la Nation sont:")
+        for i in pres_qui_parle_de_nation:
+            if pres_qui_parle_de_nation[i] != 0:
+                print(i, end=" ")
+        print("\net celui qui la dis le plus de fois est :", end="")
+        print(max(pres_qui_parle_de_nation, key=pres_qui_parle_de_nation.get))
+    elif choix == '5':
+        print("Presidents qui parlent de ecologie et/ou climat:")
+        for i in pres_qui_parle_de_eco:
+            if pres_qui_parle_de_eco[i] != 0:
+                print(i, end=" ")
+        print("\nPresident qui parle le plus d'ecologie et/ou climat est: ", end="")
+        print(max(pres_qui_parle_de_eco, key=pres_qui_parle_de_eco.get))
+    elif choix == '6':
+        print("Les mots que tous les présidents ont évoqués sont :")
+        print(mot_dit_par_tout_president_mais_pas_non_important)
+    else:
+        print("le chiffre n'est pas valide")
 
 
 
