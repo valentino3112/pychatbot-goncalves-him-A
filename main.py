@@ -121,14 +121,15 @@ liste_nom_pres.sort()
 
 
 liste_pres = fullname_liste_pres()
-print(liste_pres)
+#print(liste_pres)
 
 clean_text()
 idf_corpus = idf("cleaned")
-print(len(idf_corpus))
+#print(len(idf_corpus))
 matrice_score_tf_idf =  score_tfidf("cleaned")
-print(len(matrice_score_tf_idf))
+#print(len(matrice_score_tf_idf))
 print("done")
+
 #-----mot moins important-----
 mots_moins_important = []
 for i,k in zip(matrice_score_tf_idf, idf_corpus):
