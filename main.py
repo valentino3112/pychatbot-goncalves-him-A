@@ -131,7 +131,7 @@ print(len(matrice_score_tf_idf))
 print("done")
 for i,k in zip(matrice_score_tf_idf, idf_corpus):
     if i == [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]:
-        print("mot moins utiliser:", k)
+        print("mot moins important:", k)
 
 # print(len(score_tfidf("cleaned")))
 #
