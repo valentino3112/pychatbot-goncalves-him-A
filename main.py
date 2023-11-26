@@ -128,7 +128,7 @@ idf_corpus = idf("cleaned")
 #print(len(idf_corpus))
 matrice_score_tf_idf =  score_tfidf("cleaned")
 #print(len(matrice_score_tf_idf))
-print("done")
+print("chargement....")
 
 #-----mot moins important-----
 mots_moins_important = []
