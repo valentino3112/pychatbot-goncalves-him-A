@@ -1,6 +1,7 @@
 
 # pychatbot-goncalves-him-A
 
+https://github.com/valentino3112/pychatbot-goncalves-him-A/
 
 Ce projet nous fait exploré les concepts fondamentaux du traitement de texte, mettant l'accent sur le développement de chatbots et d'intelligences artificielles génératives telles que chatGPT. Notre approche s'est concentrée sur une méthode utilisant la fréquence des mots pour générer des réponses intelligentes à partir d'un ensemble de textes.
 
