@@ -267,6 +267,13 @@ while True:
     else:
         print("le chiffre n'est pas valide")
 
+def clean_question() :
+    question = input("Veuillez saisir une question :")
+    question = question.lower() #on remplace les masjuscules par des minuscules
+    question = question.replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("`","").replace("\"","").replace("\n", " ").replace("   ", " ").replace("  ", " ") #on enlève toutes les ponctuations
+    separation_mot = question.split()  #on separe les mots qu'on mets dans une liste
+    return separation_mot
+
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
