@@ -274,6 +274,13 @@ def clean_question() :
     separation_mot = question.split()  #on separe les mots qu'on mets dans une liste
     return separation_mot
 
+def mot_question_corpus :
+    for i in separation_mot :
+        mot_garde = []
+        if i in list_of_files("cleaned", "txt"):
+            mot_garde.append(i)
+        else :
+            del separation_mot[i]
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
