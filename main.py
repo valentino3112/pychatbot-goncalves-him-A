@@ -5,29 +5,36 @@ import math
 #Fonction qui permet de renvoyer une liste contenant le nom des fichiers et son extension choisi
 def list_of_files(directory, extension): #on prends une entrée (directory) ainsi que l'extension d'un fichier (extension)
     files_names = []
+
     for filename in os.listdir(directory): #boucle qui recommence dans tous les fichiers présent dans le répertoire choisi
         if filename.endswith(extension): #verifie si le nom du fichier se finit par la même extension
             files_names.append(filename) #si oui, il l'ajoute au fichier "files_names"
+
     return files_names
 
 #On récupère le nom du président et nous retourne le resultat
 def extraire_nom_president(nom: str):
     result = nom[11:-4].rstrip("1234567890").replace(" ","_") #on prends le nom qui se trouve à l'indice 11 jusqu'à l'indice -4 en supprimant les chiffres allant de 0 à 9
+
     return result
 
 #On prends les noms des présidents sans doublons et le retourne dans la liste
 def liste_des_pres():
     resultat = []
+
     for txt in list_of_files("speeches", "txt"): #on choisie l'entrée ainsi que l'extension du fichier
         if extraire_nom_president(txt) not in resultat: #si le nom du président n'est pas déjà dans le résultat, on le rajoute à la fin de la list
             resultat.append(extraire_nom_president(txt))
+
     return resultat
 
 #permet d'associer un prénom à chaque nom de famille d'un président
 def fullname_liste_pres():
     resultat = []
+
     for i in range(len(liste_nom_pres)):
         resultat.append((prenoms[i], liste_nom_pres[i]))
+
     return resultat
 
 #On nettoie le fichier texte "speeches" et on l'enregistre dans un nouveau répertoire "cleaned"
@@ -41,46 +48,58 @@ def clean_text():
 def everywordonce(corpus):
     words = []
     result = []
+
     for i in corpus:
         for j in i.split():
             if j not in words:
                 result.append(j)
             words.append(j)
+
     return result
 
 #Fonction qui écrit le nombre d'occurences de chaque mots présent dans les discours des présidents
 def tf(texte: str):
     corpus = []
+
     for nom in list_of_files("cleaned","txt"):
         with open("cleaned/"+nom) as f:
             corpus.append(f.read())
+
     everyword = everywordonce(corpus)
     liste_mots = texte.split()
     result = {}
     words = []
     occurence = 0
+
     for mot in everyword:
         occurence = 0
+
         for mot_dans_doc in liste_mots:
             if mot == mot_dans_doc:
                 occurence = occurence + 1
+
         if mot not in words:
             result[mot] = occurence / len(liste_mots)
         words.append(mot)
+
     return result
 
 #a
 def idf(repertoire: str) :
     corpus = []
     tf_du_corpus = []
+
     for nom in list_of_files(repertoire,"txt"):
         with open(repertoire +"/"+nom) as f:
             corpus.append(f.read())
+
     for txt in corpus:
         tf_du_corpus.append(tf(txt))
+
     occurence = 0
     idf = {}
     mots_parcouru = []
+
     for tfdoc in tf_du_corpus:
         for mot in tfdoc:
             occurence = 0
@@ -90,15 +109,18 @@ def idf(repertoire: str) :
             if mot not in mots_parcouru: #pour eviter doublons
                 idf[mot] = math.log10(len(corpus) / occurence)
             mots_parcouru.append(mot)
+
     return idf
 
 def score_tfidf(repertoire):
     corpus = []
+
     for nom in list_of_files(repertoire, "txt"):
         with open(repertoire + "/" + nom) as f:
             corpus.append(f.read())
 
     tf_du_corpus = []
+
     for txt in corpus:
         tf_du_corpus.append(tf(txt))
 
@@ -241,12 +263,15 @@ while True:
     if choix == '1':
         print("Les mots les moins importants sont :")
         print(mots_moins_important)
+
     elif choix == '2':
         print("Les mots les plus importants sont :")
         print(somme_tfidf_decroissant)
+
     elif choix == '3':
         print("Les mots les plus répétés de Chirac sont :")
         print(tf_decroissant)
+
     elif choix == '4':
         print("Les noms des présidents qui ont parlé de la Nation sont:")
         for i in pres_qui_parle_de_nation:
@@ -254,6 +279,7 @@ while True:
                 print(i, end=" ")
         print("\net celui qui la dis le plus de fois est :", end="")
         print(max(pres_qui_parle_de_nation, key=pres_qui_parle_de_nation.get))
+
     elif choix == '5':
         print("Presidents qui parlent de ecologie et/ou climat:")
         for i in pres_qui_parle_de_eco:
@@ -261,26 +287,62 @@ while True:
                 print(i, end=" ")
         print("\nPresident qui parle le plus d'ecologie et/ou climat est: ", end="")
         print(max(pres_qui_parle_de_eco, key=pres_qui_parle_de_eco.get))
+
     elif choix == '6':
         print("Les mots que tous les présidents ont évoqués sont :")
         print(mot_dit_par_tout_president_mais_pas_non_important)
+
     else:
         print("le chiffre n'est pas valide")
 
-def clean_question() :
+
+def clean_question():
     question = input("Veuillez saisir une question :")
-    question = question.lower() #on remplace les masjuscules par des minuscules
-    question = question.replace(".","").replace(",","").replace("!", "").replace("'"," ").replace("-", " ").replace("`","").replace("\"","").replace("\n", " ").replace("   ", " ").replace("  ", " ") #on enlève toutes les ponctuations
-    separation_mot = question.split()  #on separe les mots qu'on mets dans une liste
+
+    question = "".join(chr(ord(c) + 32) if 65 <= ord(c) <= 90 else c for c in question) # on remplace les majuscules par des minuscules en utilisant la valeur ASCII
+    punctuations = [".", ",", "!", "'", "-", "`", "\"", "\n"] # on enleve les ponctuations
+
+    for punctuation in punctuations:
+        question = question.replace(punctuation, " ")
+
+    while "  " in question: # on enleve les espaces multiples
+        question = question.replace("  ", " ")
+
+    question = question.strip() # on supprime les espaces au début et à la fin de la chaîne
+    separation_mot = question.split()# on sépare les mots et on les place dans une liste
+
     return separation_mot
 
 def mot_question_corpus :
-    for i in separation_mot :
+    for filename in os.listdir("cleaned"): # on parcourt les fichiers du dossier "cleaned"
         mot_garde = []
-        if i in list_of_files("cleaned", "txt"):
-            mot_garde.append(i)
-        else :
-            del separation_mot[i]
+        file_content = ""   # Lecture du contenu de chaque fichier
+
+        with open(os.path.join("cleaned", filename), "r") as file:
+            for line in file:
+                file_content += line
+
+        for mot in separation_mot:  # on verifie les mots similaires entre la question et le contenu du fichier
+            if mot in file_words and mot not in mots_garde:
+                mots_garde.append(mot)
+
+    return mots_garde
+def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour calculer le vecteur TF-IDF de la question
+    scores_idf = idf(repertoire) # on appelle les fonctions scores IDF et la matrice TF-IDF du corpus
+    matrice_tfidf = score_tfidf(repertoire)
+
+    vecteur_tf_question = [0] * len(matrice_tfidf[0]) # on initalise d'un vecteur TF pour la question
+
+    for mot in mot_garde: # on calcule du score TF pour chaque mot de la question
+        if mot in matrice_tfidf[1]: # on vérifie si le mot de la question est présent dans la matrice TF-IDF du corpus
+            indice_mot = matrice_tfidf[1].index(mot) # on obtenient l'indice du mot dans la matrice TF-IDF
+            tf_mot = mot_garde.count(mot) / len(mot_garde) # on calcule le TF pour le mot dans la question
+            tfidf_mot = tf_mot * scores_idf[indice_mot] # on calcule du TF-IDF pour le mot dans la question en utilisant le score IDF du corpus
+            vecteur_tf_question[indice_mot] = tfidf_mot # on donne le score TF-IDF au vecteur TF-IDF de la question
+
+    return vecteur_tf_question
+
+
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
