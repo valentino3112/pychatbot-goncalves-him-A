@@ -313,7 +313,7 @@ def clean_question():
 
     return separation_mot
 
-def mot_question_corpus :
+def mot_question_corpus ():
     for filename in os.listdir("cleaned"): # on parcourt les fichiers du dossier "cleaned"
         mot_garde = []
         file_content = ""   # Lecture du contenu de chaque fichier
