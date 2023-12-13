@@ -315,12 +315,14 @@ def clean_question():
 
 def mot_question_corpus (dictcorpus):
     question = clean_question()
-    L = []
+    mot_commun = []
     for i in question:
         if i in dictcorpus:
-            print(i, "est dans le corpus")
-            L.append(i)
-    return L
+            if i in mot_commun :
+                print(i, "est déjà dans le corpus")
+            else :
+                mot_commun.append(i)
+    return mot_commun
 print(mot_question_corpus(CORPUSDICT))
 def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour calculer le vecteur TF-IDF de la question
     scores_idf = idf(repertoire) # on appelle les fonctions scores IDF et la matrice TF-IDF du corpus
