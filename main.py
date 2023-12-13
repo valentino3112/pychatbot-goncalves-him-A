@@ -247,7 +247,7 @@ for i in mot_que_pres_ont_dit:
 #     print(i)
 
 
-
+print(len(matrice_score_tf_idf))
 while True:
     print("\nMenu :")
     print("1. Afficher les mots les moins importants")
@@ -339,7 +339,7 @@ def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour ca
 
     return vecteur_tf_question
 
-a
+#test
 
 print(tf)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
