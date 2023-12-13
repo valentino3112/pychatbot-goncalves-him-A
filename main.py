@@ -45,7 +45,7 @@ def clean_text():
         with open('cleaned/' + txt, 'w') as f: #on ouvre un noveau fichier en mode ecriture
             f.write(contents) #Toutes les modifications apportées vont être dans le fichiers "cleaned"
 
-def everywordonce(corpus):
+def everywordonce(corpus): #tout les mot du corpus seulement 1 seul fois
     words = []
     result = []
 
@@ -313,20 +313,15 @@ def clean_question():
 
     return separation_mot
 
-def mot_question_corpus ():
-    for filename in os.listdir("cleaned"): # on parcourt les fichiers du dossier "cleaned"
-        mot_garde = []
-        file_content = ""   # Lecture du contenu de chaque fichier
-
-        with open(os.path.join("cleaned", filename), "r") as file:
-            for line in file:
-                file_content += line
-
-        for mot in separation_mot:  # on verifie les mots similaires entre la question et le contenu du fichier
-            if mot in file_words and mot not in mots_garde:
-                mots_garde.append(mot)
-
-    return mots_garde
+def mot_question_corpus (dictcorpus):
+    question = clean_question()
+    L = []
+    for i in question:
+        if i in dictcorpus:
+            print(i, "est dans le corpus")
+            L.append(i)
+    return L
+print(mot_question_corpus(CORPUSDICT))
 def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour calculer le vecteur TF-IDF de la question
     scores_idf = idf(repertoire) # on appelle les fonctions scores IDF et la matrice TF-IDF du corpus
     matrice_tfidf = score_tfidf(repertoire)
@@ -344,5 +339,5 @@ def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour ca
 
 
 
-
+print(tf)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
