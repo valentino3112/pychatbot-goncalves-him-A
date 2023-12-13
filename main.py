@@ -339,7 +339,7 @@ def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour ca
 
     return vecteur_tf_question
 
-
+a
 
 print(tf)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
