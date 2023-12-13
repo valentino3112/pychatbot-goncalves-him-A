@@ -126,11 +126,17 @@ def score_tfidf(repertoire):
 
     idf_corpus = idf(repertoire)
 
-    matrice = [[0 for k in range(len(corpus))] for i in range(len(idf_corpus))]
+    #matrice = [[0 for k in range(len(corpus))] for i in range(len(idf_corpus))]
+
+    # for i, v in zip(range(len(idf_corpus)), idf_corpus):        #chaque ligne correspond à un mot
+    #     for j in range(len(tf_du_corpus)):                      #chaque colonnes correspond à un doc
+    #         matrice[i][j] = idf_corpus[v]*tf_du_corpus[j][v]    #idf*tf
+
+    matrice = [[0 for k in range(len(idf_corpus))] for i in range(len(corpus))]
 
     for i, v in zip(range(len(idf_corpus)), idf_corpus):        #chaque ligne correspond à un mot
         for j in range(len(tf_du_corpus)):                      #chaque colonnes correspond à un doc
-            matrice[i][j] = idf_corpus[v]*tf_du_corpus[j][v]    #idf*tf
+            matrice[j][i] = idf_corpus[v]*tf_du_corpus[j][v]    #idf*tf
 
     return matrice
 
