@@ -57,7 +57,7 @@ def everywordonce(corpus): #tout les mot du corpus seulement 1 seul fois
 
     return result
 
-#Fonction qui écrit le nombre d'occurences de chaque mots présent dans les discours des présidents
+#Fonction qui calcule le TF de chaque mot dans les discors des présidents
 def tf(texte: str):
     corpus = []
 
@@ -84,7 +84,7 @@ def tf(texte: str):
 
     return result
 
-
+#Fonction qui calcule l'IDF de chaque mot dans les textes des présidents
 def idf(repertoire: str) :
     corpus = []
     tf_du_corpus = []
@@ -100,15 +100,15 @@ def idf(repertoire: str) :
     idf = {}
     mots_parcouru = []
 
-    for tfdoc in tf_du_corpus:
-        for mot in tfdoc:
+    for tfdoc in tf_du_corpus: #On parcourt le TF document par document du corpus
+        for mot in tfdoc: #Puis on parcourt tous les mots dans le TF du document
             occurence = 0
             for texte in corpus:
                 if mot in texte:
                     occurence = occurence + 1  #si le mot apparait dans un des texte du corpus on fait +1
             if mot not in mots_parcouru: #pour eviter doublons
-                idf[mot] = math.log10(len(corpus) / occurence)
-            mots_parcouru.append(mot)
+                idf[mot] = math.log10(len(corpus) / occurence) #On calcule l'IDF en utilisant le log10
+            mots_parcouru.append(mot) #Puis on l'ajoute a la liste mots_parcouru
 
     return idf
 
