@@ -323,20 +323,6 @@ def mot_question_corpus(question):
                 mot_commun.append(i)
     return mot_commun
 #print(mot_question_corpus(CORPUSDICT))
-def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour calculer le vecteur TF-IDF de la question
-    scores_idf = idf(repertoire) # on appelle les fonctions scores IDF et la matrice TF-IDF du corpus
-    matrice_tfidf = score_tfidf(repertoire)
-
-    vecteur_tf_question = [0] * len(matrice_tfidf[0]) # on initalise d'un vecteur TF pour la question
-
-    for mot in mot_garde: # on calcule du score TF pour chaque mot de la question
-        if mot in matrice_tfidf[1]: # on vérifie si le mot de la question est présent dans la matrice TF-IDF du corpus
-            indice_mot = matrice_tfidf[1].index(mot) # on obtenient l'indice du mot dans la matrice TF-IDF
-            tf_mot = mot_garde.count(mot) / len(mot_garde) # on calcule le TF pour le mot dans la question
-            tfidf_mot = tf_mot * scores_idf[indice_mot] # on calcule du TF-IDF pour le mot dans la question en utilisant le score IDF du corpus
-            vecteur_tf_question[indice_mot] = tfidf_mot # on donne le score TF-IDF au vecteur TF-IDF de la question
-
-    return vecteur_tf_question
 
 #Fonction qui calcule le TF-IDF de la question posé par l'utilisateur
 def tfidf_question(question_cleaned):
