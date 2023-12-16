@@ -248,7 +248,6 @@ for i in mot_que_pres_ont_dit:
 #     print(i)
 
 
-print(len(matrice_score_tf_idf))
 # while True:
 #     print("\nMenu :")
 #     print("1. Afficher les mots les moins importants")
