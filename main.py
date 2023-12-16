@@ -177,11 +177,11 @@ discours_de_x = []
 tf_du_discours_de_x = {}
 for nom in list_of_files("cleaned", "txt"):
     if "Chirac" in nom:
-        with open("cleaned/" + nom) as f:
+        with open("cleaned/" + nom) as f: #On ouvre les document qui ont le mot "Chirac" dans leur titre
             discours_de_x.append(f.read())
 
-tf_du_discours_de_x = tf(' '.join(discours_de_x))
-tf_decroissant = sorted(tf_du_discours_de_x.items(), key=lambda x:x[1])[::-1]
+tf_du_discours_de_x = tf(' '.join(discours_de_x)) #On calcule le tf des mots des discours de Chirac
+tf_decroissant = sorted(tf_du_discours_de_x.items(), key=lambda x:x[1])[::-1] #Puis on tri en fonction de leur fréquence
 
 #----------------------------
 
@@ -357,17 +357,6 @@ def tfidf_question(question_cleaned):
             tf_question[i] = 0.0
         else:
             print(i)
-    #TF
-
-    #IDF
-    # idf_question = {}
-    #
-    # for i in mot_question_et_corpus:
-    #     idf_question[i] = idf_corpus[i]
-
-    #IDF
-    #print(idf_question)
-
     print(tf_question)
     matrice = [[0] for i in range(len(idf_corpus))]
 
@@ -379,8 +368,6 @@ def tfidf_question(question_cleaned):
     print(len(matrice))
 
 
-
-#test
 
 testquest = clean_question()
 print(testquest)
