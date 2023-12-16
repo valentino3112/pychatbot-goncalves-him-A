@@ -254,59 +254,59 @@ for i in mot_que_pres_ont_dit:
 
 
 print(len(matrice_score_tf_idf))
-while True:
-    print("\nMenu :")
-    print("1. Afficher les mots les moins importants")
-    print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
-    print("3. Indiquer les mots les plus répétés par le président Chirac")
-    print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
-    print("5. Indiquer le premier président à parler du climat ou de l'écologie")
-    print("6. Trouver les mots évoqués par tous les présidents")
-
-
-    choix = input("Choisissez une option : ")
-
-    if choix == '1':
-        print("Les mots les moins importants sont :")
-        print(mots_moins_important)
-
-    elif choix == '2':
-        print("Les mots les plus importants sont :")
-        print(somme_tfidf_decroissant)
-
-    elif choix == '3':
-        print("Les mots les plus répétés de Chirac sont :")
-        print(tf_decroissant)
-
-    elif choix == '4':
-        print("Les noms des présidents qui ont parlé de la Nation sont:")
-        for i in pres_qui_parle_de_nation:
-            if pres_qui_parle_de_nation[i] != 0:
-                print(i, end=" ")
-        print("\net celui qui la dis le plus de fois est :", end="")
-        print(max(pres_qui_parle_de_nation, key=pres_qui_parle_de_nation.get))
-
-    elif choix == '5':
-        print("Presidents qui parlent de ecologie et/ou climat:")
-        for i in pres_qui_parle_de_eco:
-            if pres_qui_parle_de_eco[i] != 0:
-                print(i, end=" ")
-        print("\nPresident qui parle le plus d'ecologie et/ou climat est: ", end="")
-        print(max(pres_qui_parle_de_eco, key=pres_qui_parle_de_eco.get))
-
-    elif choix == '6':
-        print("Les mots que tous les présidents ont évoqués sont :")
-        print(mot_dit_par_tout_president_mais_pas_non_important)
-
-    else:
-        print("le chiffre n'est pas valide")
+# while True:
+#     print("\nMenu :")
+#     print("1. Afficher les mots les moins importants")
+#     print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
+#     print("3. Indiquer les mots les plus répétés par le président Chirac")
+#     print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
+#     print("5. Indiquer le premier président à parler du climat ou de l'écologie")
+#     print("6. Trouver les mots évoqués par tous les présidents")
+#
+#
+#     choix = input("Choisissez une option : ")
+#
+#     if choix == '1':
+#         print("Les mots les moins importants sont :")
+#         print(mots_moins_important)
+#
+#     elif choix == '2':
+#         print("Les mots les plus importants sont :")
+#         print(somme_tfidf_decroissant)
+#
+#     elif choix == '3':
+#         print("Les mots les plus répétés de Chirac sont :")
+#         print(tf_decroissant)
+#
+#     elif choix == '4':
+#         print("Les noms des présidents qui ont parlé de la Nation sont:")
+#         for i in pres_qui_parle_de_nation:
+#             if pres_qui_parle_de_nation[i] != 0:
+#                 print(i, end=" ")
+#         print("\net celui qui la dis le plus de fois est :", end="")
+#         print(max(pres_qui_parle_de_nation, key=pres_qui_parle_de_nation.get))
+#
+#     elif choix == '5':
+#         print("Presidents qui parlent de ecologie et/ou climat:")
+#         for i in pres_qui_parle_de_eco:
+#             if pres_qui_parle_de_eco[i] != 0:
+#                 print(i, end=" ")
+#         print("\nPresident qui parle le plus d'ecologie et/ou climat est: ", end="")
+#         print(max(pres_qui_parle_de_eco, key=pres_qui_parle_de_eco.get))
+#
+#     elif choix == '6':
+#         print("Les mots que tous les présidents ont évoqués sont :")
+#         print(mot_dit_par_tout_president_mais_pas_non_important)
+#
+#     else:
+#         print("le chiffre n'est pas valide")
 
 
 def clean_question():
     question = input("Veuillez saisir une question :")
 
     question = "".join(chr(ord(c) + 32) if 65 <= ord(c) <= 90 else c for c in question) # on remplace les majuscules par des minuscules en utilisant la valeur ASCII
-    punctuations = [".", ",", "!", "'", "-", "`", "\"", "\n"] # on enleve les ponctuations
+    punctuations = [".", ",", "!", "'", "-", "`", "\"", "\n", "?", ":", ";"] # on enleve les ponctuations
 
     for punctuation in punctuations:
         question = question.replace(punctuation, " ")
@@ -319,17 +319,16 @@ def clean_question():
 
     return separation_mot
 
-def mot_question_corpus (dictcorpus):
-    question = clean_question()
+def mot_question_corpus(question):
     mot_commun = []
     for i in question:
-        if i in dictcorpus:
+        if i in CORPUSDICT:
             if i in mot_commun :
                 print(i, "est déjà dans le corpus")
             else :
                 mot_commun.append(i)
     return mot_commun
-print(mot_question_corpus(CORPUSDICT))
+#print(mot_question_corpus(CORPUSDICT))
 def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour calculer le vecteur TF-IDF de la question
     scores_idf = idf(repertoire) # on appelle les fonctions scores IDF et la matrice TF-IDF du corpus
     matrice_tfidf = score_tfidf(repertoire)
@@ -345,7 +344,51 @@ def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour ca
 
     return vecteur_tf_question
 
+def tfidf_question(question_cleaned):
+    print("aaaaa")
+    matrice = []
+    mot_question_et_corpus = mot_question_corpus(question_cleaned)
+    #TF
+    tf_question = {}
+    for i in question_cleaned:
+        occurence = 0
+        for j in question_cleaned:
+            if i == j:
+                occurence += 1
+        if i in mot_question_et_corpus:
+            tf_question[i] = occurence/len(question_cleaned)
+
+    for i in CORPUSDICT:
+        if not i in tf_question:
+            tf_question[i] = 0.0
+        else:
+            print(i)
+    #TF
+
+    #IDF
+    # idf_question = {}
+    #
+    # for i in mot_question_et_corpus:
+    #     idf_question[i] = idf_corpus[i]
+
+    #IDF
+    #print(idf_question)
+
+    print(tf_question)
+    matrice = [[0] for i in range(len(idf_corpus))]
+
+    for i, v in zip(range(len(idf_corpus)), idf_corpus):
+        if v == 'ceci':
+            print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
+        matrice[i][0] = tf_question[v]*idf_corpus[v]
+
+    print(len(matrice))
+
+
+
 #test
 
-print(tf)
+testquest = clean_question()
+print(testquest)
+tfidf_question(testquest)
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
