@@ -61,26 +61,26 @@ def everywordonce(corpus): #tout les mot du corpus seulement 1 seul fois
 def tf(texte: str):
     corpus = []
 
-    for nom in list_of_files("cleaned","txt"):
-        with open("cleaned/"+nom) as f:
+    for nom in list_of_files("cleaned","txt"): # On parcourt les fichier qui sont dans le répertoire "cleaned"
+        with open("cleaned/"+nom) as f: # On ouvre chaque fichier du corpus
             corpus.append(f.read())
 
-    everyword = everywordonce(corpus)
+    everyword = everywordonce(corpus) #On appelle la fonction everywordonce qui nous donne tous les mots de tous le corpus en un seul exemplaire
     liste_mots = texte.split()
     result = {}
     words = []
     occurence = 0
 
-    for mot in everyword:
+    for mot in everyword: #On parcourt tous les mots
         occurence = 0
 
-        for mot_dans_doc in liste_mots:
+        for mot_dans_doc in liste_mots: #On parcourt cette fois ci chaque mot dans un texte
             if mot == mot_dans_doc:
-                occurence = occurence + 1
+                occurence = occurence + 1 #Si on retrouve le même on ajoute 1 pour connaitre le nombre de fois que le mot apparait
 
-        if mot not in words:
-            result[mot] = occurence / len(liste_mots)
-        words.append(mot)
+        if mot not in words: #Si le mot n'as pas été ajoute dans la liste alors :
+            result[mot] = occurence / len(liste_mots) #On calcule son TF en divisant son notre d'occurence par le nombre de mots dans liste_mots
+        words.append(mot) #Puis on l'ajoute a la liste words
 
     return result
 
