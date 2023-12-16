@@ -111,7 +111,7 @@ def idf(repertoire: str) :
             mots_parcouru.append(mot) #Puis on l'ajoute a la liste mots_parcouru
 
     return idf
-
+#On va maintenant calcule le score TF-IDF
 def score_tfidf(repertoire):
     corpus = []
 
@@ -122,17 +122,11 @@ def score_tfidf(repertoire):
     tf_du_corpus = []
 
     for txt in corpus:
-        tf_du_corpus.append(tf(txt))
+        tf_du_corpus.append(tf(txt)) #On calcule le TF de chaque document dans le corpus avec la fonction TF
 
-    idf_corpus = idf(repertoire)
+    idf_corpus = idf(repertoire) #On calcule les valeurs IDF pour le corpus  avec la fonction IDF
 
-    #matrice = [[0 for k in range(len(corpus))] for i in range(len(idf_corpus))]
-
-    # for i, v in zip(range(len(idf_corpus)), idf_corpus):        #chaque ligne correspond à un mot
-    #     for j in range(len(tf_du_corpus)):                      #chaque colonnes correspond à un doc
-    #         matrice[i][j] = idf_corpus[v]*tf_du_corpus[j][v]    #idf*tf
-
-    matrice = [[0 for k in range(len(idf_corpus))] for i in range(len(corpus))]
+    matrice = [[0 for k in range(len(idf_corpus))] for i in range(len(corpus))] #On initialise une matrice de dimension "nombre de document" et "nombre de mots dans le corpus
 
     for i, v in zip(range(len(idf_corpus)), idf_corpus):        #chaque ligne correspond à un mot
         for j in range(len(tf_du_corpus)):                      #chaque colonnes correspond à un doc
