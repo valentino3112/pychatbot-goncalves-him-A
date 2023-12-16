@@ -155,7 +155,7 @@ print("chargement....")
 #-----mot moins important-----
 mots_moins_important = []
 for i,k in zip(matrice_score_tf_idf, idf_corpus):
-    if i == [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]:
+    if i == [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]: #On prend tous les mots qui possède un TF-IDF dans chaque document de 0.0
         mots_moins_important.append(k)
 
 #----------------------------
