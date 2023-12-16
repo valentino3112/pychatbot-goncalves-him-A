@@ -188,7 +188,7 @@ tf_decroissant = sorted(tf_du_discours_de_x.items(), key=lambda x:x[1])[::-1] #P
 #----nom_des_pres_qui_parle_de_x-----
 tout_les_discours = {}
 for nom in list_of_files("cleaned", "txt"):
-    tout_les_discours[extraire_nom_president(nom)] = []
+    tout_les_discours[extraire_nom_president(nom)] = [] #On utiluse une fonction pour prendre le nom du président grâce au nom du fichier et on le met en clé
 
 for nom in list_of_files("cleaned", "txt"):
     with open("cleaned/" + nom) as f:
@@ -197,9 +197,9 @@ for nom in list_of_files("cleaned", "txt"):
 pres_qui_parle_de_nation = {}
 for i in tout_les_discours:
     pres_qui_parle_de_nation[i] = 0
-    for j in tout_les_discours[i]:
-        if tf(j)["nation"] != 0.0:
-            pres_qui_parle_de_nation[i] = pres_qui_parle_de_nation[i] + tf(j)["nation"]
+    for j in tout_les_discours[i]: #on parcourt les discours pour le président 'i'
+        if tf(j)["nation"] != 0.0: #Si le tf de nation est différent de 0 dans le discours alors
+            pres_qui_parle_de_nation[i] = pres_qui_parle_de_nation[i] + tf(j)["nation"] #On incrémente la fréquence du mot Nation dans le discours
             #print((i,tf(j)["nation"]))
 
 #----------------------------
@@ -209,8 +209,8 @@ pres_qui_parle_de_eco = {}
 for i in tout_les_discours:
     pres_qui_parle_de_eco[i] = 0
     for j in tout_les_discours[i]:
-        if "climat" in j or "écolo" in j:
-            pres_qui_parle_de_eco[i] = pres_qui_parle_de_eco[i] + 1
+        if "climat" in j or "écolo" in j: #Si le mot "climat" ou "écolo" sont dans le discours alors
+            pres_qui_parle_de_eco[i] = pres_qui_parle_de_eco[i] + 1 #On incrémente le compteur du présient 'i'
 
 
 #----------------------------
@@ -221,15 +221,16 @@ for nom in list_of_files("cleaned", "txt"):
     with open("cleaned/" + nom) as f:
         THECORPUS.append(f.read())
 
-CORPUSDICT = everywordonce(THECORPUS)
+CORPUSDICT = everywordonce(THECORPUS) #On crée un dictionnaire avec tous les mots du corpus
 
 mot_que_pres_ont_dit = {}
 
 for i in CORPUSDICT:
     mot_que_pres_ont_dit[i] = []
+
     for j in tout_les_discours:
         for k in tout_les_discours[j]:
-            if i in k and idf_corpus[i] != 0.0:
+            if i in k and idf_corpus[i] != 0.0: #on vérifie sir le mot 'i' est présent dans les discours et si son IDF est non nul
                 #print(j,"le dit")
                 mot_que_pres_ont_dit[i].append(j)
                 break
@@ -237,7 +238,7 @@ for i in CORPUSDICT:
 mot_dit_par_tout_president_mais_pas_non_important = []
 
 for i in mot_que_pres_ont_dit:
-    if len(mot_que_pres_ont_dit[i]) == 6:
+    if len(mot_que_pres_ont_dit[i]) == 6: #On vérifie si mot a été par les présidents (donc 6)
         mot_dit_par_tout_president_mais_pas_non_important.append(i)
 
 #----------------------------
@@ -338,34 +339,37 @@ def vecteur_tfidf_question(repertoire: str, mot_garde: list): # Fonction pour ca
 
     return vecteur_tf_question
 
+#Fonction qui calcule le TF-IDF de la question posé par l'utilisateur
 def tfidf_question(question_cleaned):
-    print("aaaaa")
     matrice = []
+
     mot_question_et_corpus = mot_question_corpus(question_cleaned)
-    #TF
+
     tf_question = {}
     for i in question_cleaned:
         occurence = 0
         for j in question_cleaned:
             if i == j:
-                occurence += 1
+                occurence += 1 #On compte de nombre de fois que le mot 'i' apparait dans la question et on l'incrémente
         if i in mot_question_et_corpus:
-            tf_question[i] = occurence/len(question_cleaned)
+            tf_question[i] = occurence/len(question_cleaned) #On calcule son TF
 
-    for i in CORPUSDICT:
+    for i in CORPUSDICT: #On prends les mots qui ne sont pas dans la question et on les ajoute dans le dictionnaire
         if not i in tf_question:
-            tf_question[i] = 0.0
+            tf_question[i] = 0.0 #On mets leur TF égal à 0.0
         else:
             print(i)
+
     print(tf_question)
+
     matrice = [[0] for i in range(len(idf_corpus))]
 
     for i, v in zip(range(len(idf_corpus)), idf_corpus):
         if v == 'ceci':
             print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
-        matrice[i][0] = tf_question[v]*idf_corpus[v]
+        matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
 
-    print(len(matrice))
+
 
 
 
