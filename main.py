@@ -84,7 +84,7 @@ def tf(texte: str):
 
     return result
 
-#a
+
 def idf(repertoire: str) :
     corpus = []
     tf_du_corpus = []
