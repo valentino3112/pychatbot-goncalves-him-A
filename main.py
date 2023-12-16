@@ -353,7 +353,7 @@ def tfidf_question(question_cleaned):
         if i in mot_question_et_corpus:
             tf_question[i] = occurence/len(question_cleaned) #On calcule son TF
 
-    for i in CORPUSDICT: #On prends les mots qui ne sont pas dans la question et on les ajoute dans le dictionnaire
+    for i in CORPUSDICT: #On prend les mots qui ne sont pas dans la question et on les ajoute dans le dictionnaire
         if not i in tf_question:
             tf_question[i] = 0.0 #On mets leur TF égal à 0.0
         else:
