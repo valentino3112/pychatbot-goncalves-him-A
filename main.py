@@ -356,9 +356,6 @@ def tfidf_question(question_cleaned):
 
 
 
-#test
-
 testquest = clean_question()
 print(testquest)
 tfidf_question(testquest)
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
