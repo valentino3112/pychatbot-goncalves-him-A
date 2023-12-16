@@ -163,10 +163,10 @@ for i,k in zip(matrice_score_tf_idf, idf_corpus):
 #----mots_plus_important-----
 mots_plus_important = []
 somme_tfidf = {}
-for i,k in zip(matrice_score_tf_idf, idf_corpus):
-    somme_tfidf[k] = sum(i)
+for i,k in zip(matrice_score_tf_idf, idf_corpus): #On parcourt deux matrice en meme temps
+    somme_tfidf[k] = sum(i) #On fait la somme des valeurs TF-IDF pour chaque mot qu'on met dans un dictionnaire
 
-somme_tfidf_decroissant = sorted(somme_tfidf.items(), key=lambda x:x[1])[::-1]
+somme_tfidf_decroissant = sorted(somme_tfidf.items(), key=lambda x:x[1])[::-1] #On va trier en ordonnant les éléments du dictionnaire par valeur
 
 
 #----------------------------
