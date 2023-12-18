@@ -355,6 +355,10 @@ def tfidf_question(question_cleaned):
         matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
 
 
+def produit_scalaire(a, b):
+    assert(len(a) == len(b))
+    res = sum(i * j for i,j in zip(a, b))
+    return res
 
 testquest = clean_question()
 print(testquest)
