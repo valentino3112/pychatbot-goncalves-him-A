@@ -1,3 +1,5 @@
+#matrice_score_tf_idf -> MATRICE/VECTEUR TF-IDF DU CORPUS
+#matrice_score_tf_idf_question -> MATRICE/VECTEUR TF-IDF DE LA QUESTION
 import os
 import math
 
