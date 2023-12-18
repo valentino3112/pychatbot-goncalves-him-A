@@ -415,14 +415,14 @@ for i in matrice_score_tf_idf_question:
 print(list(idf_corpus)[temp.index(max(temp))]) #les dictionnaires conservent l'ordre, ici on cherche tf-idf le plus élevé de la question et on retourne le mot
 
 DA_word = list(idf_corpus)[temp.index(max(temp))]
-
+print("the daword", DA_word)
 ptexter = ""
 with open("speeches/"+document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")), "r") as f:
     ptexter = f.read()
 
 DA_Answer = ""
 for i in ptexter.split("."):
-    if DA_word in i:
+    if DA_word in i or DA_word in i.casefold(): #fix pour nation et tt
         print(i)
         DA_Answer = i
         break
