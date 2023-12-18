@@ -380,7 +380,7 @@ print(testquest)
 matrice_score_tf_idf_question = tfidf_question(testquest)
 print(len(matrice_score_tf_idf_question))
 
-print(matrice_score_tf_idf)
+#print(matrice_score_tf_idf)
 
 
 def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_fichiers):
@@ -403,4 +403,23 @@ def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_
     return liste_des_fichiers[similarite.index(max)]
 
 
-# MERGE calcule_de_la_similarite_question_doc AND document_le_plus_pertinent lol
+print(document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")))
+
+temp = []
+for i in matrice_score_tf_idf_question:
+    for j in i:
+        temp.append(j)
+
+print(list(idf_corpus)[temp.index(max(temp))]) #les dictionnaires conservent l'ordre, ici on cherche tf-idf le plus élevé de la question et on retourne le mot
+
+DA_word = list(idf_corpus)[temp.index(max(temp))]
+
+ptexter = ""
+with open("speeches/"+document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")), "r") as f:
+    ptexter = f.read()
+
+
+for i in ptexter.split("."):
+    if DA_word in i:
+        print(i)
+        break
