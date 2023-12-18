@@ -423,3 +423,10 @@ for i in ptexter.split("."):
     if DA_word in i:
         print(i)
         break
+
+
+question_starters = {
+    "Comment": "Après analyse, ",
+    "Pourquoi": "Car, ",
+    "Peux-tu": "Oui, bien sûr!"
+}
