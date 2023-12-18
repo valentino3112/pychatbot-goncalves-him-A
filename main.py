@@ -363,6 +363,9 @@ def produit_scalaire(a, b):
 def norme_vecteur(a):
     return math.sqrt(sum(i**2 for i in a))  #sqrt(x² + y²)
 
+def similarite_cosinus(a, b):
+    return (produit_scalaire(a,b))/(norme_vecteur(a)*norme_vecteur(b))
+
 testquest = clean_question()
 print(testquest)
 tfidf_question(testquest)
