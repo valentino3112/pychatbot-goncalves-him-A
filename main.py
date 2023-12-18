@@ -360,6 +360,9 @@ def produit_scalaire(a, b):
     res = sum(i * j for i,j in zip(a, b))
     return res
 
+def norme_vecteur(a):
+    return math.sqrt(sum(i**2 for i in a))  #sqrt(x² + y²)
+
 testquest = clean_question()
 print(testquest)
 tfidf_question(testquest)
