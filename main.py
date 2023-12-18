@@ -355,8 +355,8 @@ def tfidf_question(question_cleaned):
     matrice = [[0] for i in range(len(idf_corpus))]
 
     for i, v in zip(range(len(idf_corpus)), idf_corpus):
-        if v == 'ceci':
-            print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
+        #if v == 'ceci':
+        #    print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
         matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
     return matrice
 
