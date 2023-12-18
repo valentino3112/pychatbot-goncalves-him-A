@@ -14,6 +14,8 @@ def list_of_files(directory, extension): #on prends une entrée (directory) ains
 
     return files_names
 
+print(list_of_files("cleaned", "txt"))
+
 #On récupère le nom du président et nous retourne le resultat
 def extraire_nom_president(nom: str):
     result = nom[11:-4].rstrip("1234567890").replace(" ","_") #on prends le nom qui se trouve à l'indice 11 jusqu'à l'indice -4 en supprimant les chiffres allant de 0 à 9
@@ -139,13 +141,14 @@ def score_tfidf(repertoire):
 
 
 
-prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
+#prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
+prenoms = ["Valéry", "Emmanuel", "François", "Nicolas", "Jacques", "François"]
 liste_nom_pres = liste_des_pres()
-liste_nom_pres.sort()
+#liste_nom_pres.sort()
 
 
 liste_pres = fullname_liste_pres()
-#print(liste_pres)
+print(liste_pres)
 
 clean_text()
 idf_corpus = idf("cleaned")
@@ -355,7 +358,7 @@ def tfidf_question(question_cleaned):
         if v == 'ceci':
             print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
         matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
-
+    return matrice
 
 def produit_scalaire(a, b):
     assert(len(a) == len(b))
@@ -365,9 +368,39 @@ def produit_scalaire(a, b):
 def norme_vecteur(a):
     return math.sqrt(sum(i**2 for i in a))  #sqrt(x² + y²)
 
+
 def similarite_cosinus(a, b):
     return (produit_scalaire(a,b))/(norme_vecteur(a)*norme_vecteur(b))
 
+
+
+
 testquest = clean_question()
 print(testquest)
-tfidf_question(testquest)
+matrice_score_tf_idf_question = tfidf_question(testquest)
+print(len(matrice_score_tf_idf_question))
+
+print(matrice_score_tf_idf)
+
+def calcule_de_la_similarite_question_doc():
+    #transforme matrice tf idf de la question en vecteur
+    temp = []
+    for i in matrice_score_tf_idf_question:
+        for j in i:
+            temp.append(j)
+    #------------------------------------------------------
+    test = []
+    for i in matrice_score_tf_idf:
+        test.append(similarite_cosinus(i, temp))
+    return test #normalement len(test) == 8 et numéro le plus haut veux dire similarité plus haute avec doc correspondant
+
+def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_fichiers):
+    simil = calcule_de_la_similarite_question_doc()
+    max = 0.0
+    for i in simil:
+        if i >= temp:
+            max = i
+    return liste_des_fichiers[simil.index(max)]
+
+
+# MERGE calcule_de_la_similarite_question_doc AND document_le_plus_pertinent lol
