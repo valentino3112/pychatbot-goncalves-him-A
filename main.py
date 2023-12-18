@@ -398,7 +398,7 @@ def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_
     simil = calcule_de_la_similarite_question_doc()
     max = 0.0
     for i in simil:
-        if i >= temp:
+        if i >= max:
             max = i
     return liste_des_fichiers[simil.index(max)]
 
