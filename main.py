@@ -360,15 +360,17 @@ def tfidf_question(question_cleaned):
         matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
     return matrice
 
+#fonction qui calcule le produit scalaire de deux vecteurs
 def produit_scalaire(a, b):
     assert(len(a) == len(b))
     res = sum(i * j for i,j in zip(a, b))
     return res
 
+#fonction qui calcule la longueur d'un vecteurs
 def norme_vecteur(a):
     return math.sqrt(sum(i**2 for i in a))  #sqrt(x² + y²)
 
-
+#fonction qui calcule la similarité cosinus de deux vecteurs
 def similarite_cosinus(a, b):
     return (produit_scalaire(a,b))/(norme_vecteur(a)*norme_vecteur(b))
 
@@ -382,7 +384,7 @@ print(len(matrice_score_tf_idf_question))
 
 #print(matrice_score_tf_idf)
 
-
+#fonction qui calcule le document le plus pertinent grâce a la similarité cosinus
 def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_fichiers):
     #transforme matrice tf idf de la question en vecteur
     temp = []
