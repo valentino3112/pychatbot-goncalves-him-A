@@ -14,6 +14,8 @@ def list_of_files(directory, extension): #on prends une entrée (directory) ains
 
     return files_names
 
+print(list_of_files("cleaned", "txt"))
+
 #On récupère le nom du président et nous retourne le resultat
 def extraire_nom_president(nom: str):
     result = nom[11:-4].rstrip("1234567890").replace(" ","_") #on prends le nom qui se trouve à l'indice 11 jusqu'à l'indice -4 en supprimant les chiffres allant de 0 à 9
@@ -139,13 +141,14 @@ def score_tfidf(repertoire):
 
 
 
-prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
+#prenoms = ["Jacques", "Valéry", "François", "Emmanuel", "François", "Nicolas"]
+prenoms = ["Valéry", "Emmanuel", "François", "Nicolas", "Jacques", "François"]
 liste_nom_pres = liste_des_pres()
-liste_nom_pres.sort()
+#liste_nom_pres.sort()
 
 
 liste_pres = fullname_liste_pres()
-#print(liste_pres)
+print(liste_pres)
 
 clean_text()
 idf_corpus = idf("cleaned")
@@ -352,24 +355,78 @@ def tfidf_question(question_cleaned):
     matrice = [[0] for i in range(len(idf_corpus))]
 
     for i, v in zip(range(len(idf_corpus)), idf_corpus):
-        if v == 'ceci':
-            print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
+        #if v == 'ceci':
+        #    print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
         matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
+    return matrice
 
-#On crée une fonction pour calculer le produit scalaire de deux vecteurs
 def produit_scalaire(a, b):
-    assert(len(a) == len(b)) #On vérifie que les vecteurs ont la même longueur ou pas
+    assert(len(a) == len(b))
     res = sum(i * j for i,j in zip(a, b))
     return res
 
-# On défini une fonction pour calculer la norme (longueur) d'un vecteur
 def norme_vecteur(a):
     return math.sqrt(sum(i**2 for i in a))  #sqrt(x² + y²)
 
-#Une fonction qui calcule la similarité cosinus de deux vecteurs
+
 def similarite_cosinus(a, b):
     return (produit_scalaire(a,b))/(norme_vecteur(a)*norme_vecteur(b))
 
+
+
+
 testquest = clean_question()
 print(testquest)
-tfidf_question(testquest)
+matrice_score_tf_idf_question = tfidf_question(testquest)
+print(len(matrice_score_tf_idf_question))
+
+#print(matrice_score_tf_idf)
+
+
+def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_fichiers):
+    #transforme matrice tf idf de la question en vecteur
+    temp = []
+    for i in tfidf_de_la_question:
+        for j in i:
+            temp.append(j)
+    #------------------------------------------------------
+    similarite = []
+    for i in tfidf_du_corpus:
+        similarite.append(similarite_cosinus(i, temp))
+    # normalement len(similarite) == 8 et numéro le plus haut veux dire similarité plus haute avec doc correspondant
+
+    #recup du document le plus similaire
+    max = 0.0
+    for i in similarite:
+        if i >= max:
+            max = i
+    return liste_des_fichiers[similarite.index(max)]
+
+
+print(document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")))
+
+temp = []
+for i in matrice_score_tf_idf_question:
+    for j in i:
+        temp.append(j)
+
+print(list(idf_corpus)[temp.index(max(temp))]) #les dictionnaires conservent l'ordre, ici on cherche tf-idf le plus élevé de la question et on retourne le mot
+
+DA_word = list(idf_corpus)[temp.index(max(temp))]
+
+ptexter = ""
+with open("speeches/"+document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")), "r") as f:
+    ptexter = f.read()
+
+
+for i in ptexter.split("."):
+    if DA_word in i:
+        print(i)
+        break
+
+
+question_starters = {
+    "Comment": "Après analyse, ",
+    "Pourquoi": "Car, ",
+    "Peux-tu": "Oui, bien sûr!"
+}
