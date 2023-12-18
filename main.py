@@ -382,25 +382,25 @@ print(len(matrice_score_tf_idf_question))
 
 print(matrice_score_tf_idf)
 
-def calcule_de_la_similarite_question_doc():
+
+def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_fichiers):
     #transforme matrice tf idf de la question en vecteur
     temp = []
-    for i in matrice_score_tf_idf_question:
+    for i in tfidf_de_la_question:
         for j in i:
             temp.append(j)
     #------------------------------------------------------
-    test = []
-    for i in matrice_score_tf_idf:
-        test.append(similarite_cosinus(i, temp))
-    return test #normalement len(test) == 8 et numéro le plus haut veux dire similarité plus haute avec doc correspondant
+    similarite = []
+    for i in tfidf_du_corpus:
+        similarite.append(similarite_cosinus(i, temp))
+    # normalement len(similarite) == 8 et numéro le plus haut veux dire similarité plus haute avec doc correspondant
 
-def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_fichiers):
-    simil = calcule_de_la_similarite_question_doc()
+    #recup du document le plus similaire
     max = 0.0
-    for i in simil:
+    for i in similarite:
         if i >= max:
             max = i
-    return liste_des_fichiers[simil.index(max)]
+    return liste_des_fichiers[similarite.index(max)]
 
 
 # MERGE calcule_de_la_similarite_question_doc AND document_le_plus_pertinent lol
