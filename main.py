@@ -356,15 +356,17 @@ def tfidf_question(question_cleaned):
             print("tf:",tf_question[v], "idf:", idf_corpus[v], "tfidf:", tf_question[v]*idf_corpus[v])
         matrice[i][0] = tf_question[v]*idf_corpus[v] #On calcule et on donne un TF-IDF a chaque mot dans la matrice
 
-
+#On crée une fonction pour calculer le produit scalaire de deux vecteurs
 def produit_scalaire(a, b):
-    assert(len(a) == len(b))
+    assert(len(a) == len(b)) #On vérifie que les vecteurs ont la même longueur ou pas
     res = sum(i * j for i,j in zip(a, b))
     return res
 
+# On défini une fonction pour calculer la norme (longueur) d'un vecteur
 def norme_vecteur(a):
     return math.sqrt(sum(i**2 for i in a))  #sqrt(x² + y²)
 
+#Une fonction qui calcule la similarité cosinus de deux vecteurs
 def similarite_cosinus(a, b):
     return (produit_scalaire(a,b))/(norme_vecteur(a)*norme_vecteur(b))
 
