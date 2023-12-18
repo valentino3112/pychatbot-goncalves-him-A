@@ -420,15 +420,24 @@ ptexter = ""
 with open("speeches/"+document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")), "r") as f:
     ptexter = f.read()
 
-
+DA_Answer = ""
 for i in ptexter.split("."):
     if DA_word in i:
         print(i)
+        DA_Answer = i
         break
 
 
 question_starters = {
-    "Comment": "Après analyse, ",
-    "Pourquoi": "Car, ",
-    "Peux-tu": "Oui, bien sûr!"
+    "comment": "Après analyse, ",
+    "pourquoi": "Car, ",
+    "peux-tu": "Oui, bien sûr!"
 }
+
+
+for i in testquest:
+    if i in question_starters:
+        print((question_starters[i] + DA_Answer).replace("\n", ""))
+
+
+#FIX: si la question est uncohérent y a une division par 0 dans similarite_cosinus :skull
