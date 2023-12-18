@@ -14,7 +14,7 @@ def list_of_files(directory, extension): #on prends une entrée (directory) ains
 
     return files_names
 
-print(list_of_files("cleaned", "txt"))
+#print(list_of_files("cleaned", "txt")) # supprimer pour plus tard
 
 #On récupère le nom du président et nous retourne le resultat
 def extraire_nom_president(nom: str):
@@ -148,7 +148,7 @@ liste_nom_pres = liste_des_pres()
 
 
 liste_pres = fullname_liste_pres()
-print(liste_pres)
+#print(liste_pres) # supprimer pour plus tard
 
 clean_text()
 idf_corpus = idf("cleaned")
@@ -253,52 +253,56 @@ for i in mot_que_pres_ont_dit:
 #     print(i)
 
 
-# while True:
-#     print("\nMenu :")
-#     print("1. Afficher les mots les moins importants")
-#     print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
-#     print("3. Indiquer les mots les plus répétés par le président Chirac")
-#     print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
-#     print("5. Indiquer le premier président à parler du climat ou de l'écologie")
-#     print("6. Trouver les mots évoqués par tous les présidents")
-#
-#
-#     choix = input("Choisissez une option : ")
-#
-#     if choix == '1':
-#         print("Les mots les moins importants sont :")
-#         print(mots_moins_important)
-#
-#     elif choix == '2':
-#         print("Les mots les plus importants sont :")
-#         print(somme_tfidf_decroissant)
-#
-#     elif choix == '3':
-#         print("Les mots les plus répétés de Chirac sont :")
-#         print(tf_decroissant)
-#
-#     elif choix == '4':
-#         print("Les noms des présidents qui ont parlé de la Nation sont:")
-#         for i in pres_qui_parle_de_nation:
-#             if pres_qui_parle_de_nation[i] != 0:
-#                 print(i, end=" ")
-#         print("\net celui qui la dis le plus de fois est :", end="")
-#         print(max(pres_qui_parle_de_nation, key=pres_qui_parle_de_nation.get))
-#
-#     elif choix == '5':
-#         print("Presidents qui parlent de ecologie et/ou climat:")
-#         for i in pres_qui_parle_de_eco:
-#             if pres_qui_parle_de_eco[i] != 0:
-#                 print(i, end=" ")
-#         print("\nPresident qui parle le plus d'ecologie et/ou climat est: ", end="")
-#         print(max(pres_qui_parle_de_eco, key=pres_qui_parle_de_eco.get))
-#
-#     elif choix == '6':
-#         print("Les mots que tous les présidents ont évoqués sont :")
-#         print(mot_dit_par_tout_president_mais_pas_non_important)
-#
-#     else:
-#         print("le chiffre n'est pas valide")
+while True:
+    print("\nMenu :")
+    print("1. Afficher les mots les moins importants")
+    print("2. Afficher les mots ayant le score TF-IDF le plus élevé")
+    print("3. Indiquer les mots les plus répétés par le président Chirac")
+    print("4. Indiquer le président ayant le plus parlé de la 'Nation' et le nombre de répétitions")
+    print("5. Indiquer le premier président à parler du climat ou de l'écologie")
+    print("6. Trouver les mots évoqués par tous les présidents")
+    print("7. Poser une question au chatbot")
+
+
+    choix = input("Choisissez une option : ")
+
+    if choix == '1':
+        print("Les mots les moins importants sont :")
+        print(mots_moins_important)
+
+    elif choix == '2':
+        print("Les mots les plus importants sont :")
+        print(somme_tfidf_decroissant)
+
+    elif choix == '3':
+        print("Les mots les plus répétés de Chirac sont :")
+        print(tf_decroissant)
+
+    elif choix == '4':
+        print("Les noms des présidents qui ont parlé de la Nation sont:")
+        for i in pres_qui_parle_de_nation:
+            if pres_qui_parle_de_nation[i] != 0:
+                print(i, end=" ")
+        print("\net celui qui la dis le plus de fois est :", end="")
+        print(max(pres_qui_parle_de_nation, key=pres_qui_parle_de_nation.get))
+
+    elif choix == '5':
+        print("Presidents qui parlent de ecologie et/ou climat:")
+        for i in pres_qui_parle_de_eco:
+            if pres_qui_parle_de_eco[i] != 0:
+                print(i, end=" ")
+        print("\nPresident qui parle le plus d'ecologie et/ou climat est: ", end="")
+        print(max(pres_qui_parle_de_eco, key=pres_qui_parle_de_eco.get))
+
+    elif choix == '6':
+        print("Les mots que tous les présidents ont évoqués sont :")
+        print(mot_dit_par_tout_president_mais_pas_non_important)
+
+    elif choix == '7':
+        break
+
+    else:
+        print("le chiffre n'est pas valide")
 
 
 def clean_question():
@@ -348,9 +352,10 @@ def tfidf_question(question_cleaned):
         if not i in tf_question:
             tf_question[i] = 0.0 #On mets leur TF égal à 0.0
         else:
-            print(i)
-
-    print(tf_question)
+            print()
+            #print(i)
+    # supprimer pour plus tard
+    #print(tf_question)
 
     matrice = [[0] for i in range(len(idf_corpus))]
 
@@ -378,9 +383,9 @@ def similarite_cosinus(a, b):
 
 
 testquest = clean_question()
-print(testquest)
+#print(testquest) # supprimer pour plus tard
 matrice_score_tf_idf_question = tfidf_question(testquest)
-print(len(matrice_score_tf_idf_question))
+#print(len(matrice_score_tf_idf_question)) # supprimer pour plus tard
 
 #print(matrice_score_tf_idf)
 
@@ -405,17 +410,17 @@ def document_le_plus_pertinent(tfidf_du_corpus, tfidf_de_la_question, liste_des_
     return liste_des_fichiers[similarite.index(max)]
 
 
-print(document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")))
+#print(document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt"))) # supprimer pour plus tard
 
 temp = []
 for i in matrice_score_tf_idf_question:
     for j in i:
         temp.append(j)
 
-print(list(idf_corpus)[temp.index(max(temp))]) #les dictionnaires conservent l'ordre, ici on cherche tf-idf le plus élevé de la question et on retourne le mot
+#print(list(idf_corpus)[temp.index(max(temp))]) #les dictionnaires conservent l'ordre, ici on cherche tf-idf le plus élevé de la question et on retourne le mot # supprimer pour plus tard
 
 DA_word = list(idf_corpus)[temp.index(max(temp))]
-print("the daword", DA_word)
+#print("the daword", DA_word) # supprimer pour plus tard
 ptexter = ""
 with open("speeches/"+document_le_plus_pertinent(matrice_score_tf_idf, matrice_score_tf_idf_question, list_of_files("speeches", "txt")), "r") as f:
     ptexter = f.read()
